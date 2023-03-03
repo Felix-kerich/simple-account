@@ -1,86 +1,100 @@
 #include <iostream>
+#define max_account 50
 using namespace std;
 
-class Account {
+class BankAccount {
 private:
-    int accountNumber;
-    float credit;
-
+   long int accountNumber;
+    double credit;
 public:
-    // Constructor
-    Account(int number, float initialCredit) {
-        accountNumber = number;
-        credit = initialCredit;
+    void input_details();
+    void deposit();
+    void withdraw();
+    double get_credit();
+    long int get_accNumber();
+    void showAccount_details();
+};
+    void BankAccount::input_details() {
+        int account_limit;
+        for(account_limit=0;account_limit<=max_account;account_limit++)
+         {
+            cout << "Enter account number: ";
+            cin >> accountNumber;
+            cout << "Enter initial credit: ";
+            cin >> credit;
+            break;
+        }
+        if(account_limit>max_account){
+            cout<<"account limit exceeded"<<endl;
+        }
+}
+    double BankAccount::get_credit() {
+        return (credit);
+    }
+    long int BankAccount::get_accNumber() {
+        return (accountNumber);
+    }
+    void BankAccount::showAccount_details() {
+        cout << "New credit balance is " << credit << endl;
     }
 
-    // Getter methods
-    int getAccountNumber() {
-        return accountNumber;
-    }
-
-    float getCredit() {
-        return credit;
-    }
-
-    // Setter methods
-    void setCredit(float newCredit) {
-        credit = newCredit;
-    }
-
-    // Other methods
-    void deposit(float amount) {
+    void BankAccount::deposit() {
+        float amount;
+        cout << "Enter amount to deposit: ";
+        cin >> amount;
         credit += amount;
-        cout << "Deposit successful. New credit balance: " << credit << endl;
+        cout << "New credit balance is " << credit << endl;
     }
 
-    void withdraw(float amount) {
-        if (credit - amount < 0) {
-            cout << "Insufficient credit. Withdrawal unsuccessful." << endl;
-        } else {
+    void BankAccount::withdraw() {
+        float amount;
+        cout << "Enter amount to withdraw: ";
+        cin >> amount;
+        if (amount > credit) {
+            cout << "Insufficient credit balance" << endl;
+        }
+        else {
             credit -= amount;
-            cout << "Withdrawal successful. New credit balance: " << credit << endl;
+            cout << "New credit balance is " << credit << endl;
         }
     }
-};
 
 int main() {
-    int accountNumber;
-    float initialCredit;
-    cout << "Enter account number: ";
-    cin >> accountNumber;
-    cout << "Enter initial credit: ";
-    cin >> initialCredit;
-
-    Account account(accountNumber, initialCredit);
-
+    BankAccount account;
     int choice;
-    float amount;
+
     do {
-        cout << endl << "Select an operation:" << endl;
-        cout << "1. Deposit" << endl;
-        cout << "2. Withdraw" << endl;
-        cout << "3. Exit" << endl;
-        cout << "Choice: ";
+        cout << "Choose an operation:" << endl;
+        cout << "1. Open account" << endl;
+        cout << "2. Deposit" << endl;
+        cout << "3. Withdraw" << endl;
+        cout<< "4.show balance"<<endl;
+        cout << "5. exit menu" << endl;
+        cout << "Enter choice: ";
         cin >> choice;
-        switch(choice) {
+
+        switch (choice) {
             case 1:
-                cout << "Enter deposit amount: ";
-                cin >> amount;
-                account.deposit(amount);
+                account.input_details();
                 break;
             case 2:
-                cout << "Enter withdrawal amount: ";
-                cin >> amount;
-                account.withdraw(amount);
+                account.deposit();
                 break;
             case 3:
-                cout << "Exiting program." << endl;
+                account.withdraw();
+                break;
+            case 4:
+                account.showAccount_details();
+                break;
+            case 5:
+                cout << "Exiting program" << endl;
                 break;
             default:
-                cout << "Invalid choice. Please try again." << endl;
+                cout << "Invalid choice, try again" << endl;
                 break;
         }
-    } while (choice != 3);
+    }
+    while (choice != 5);
 
     return 0;
 }
